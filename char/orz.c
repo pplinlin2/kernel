@@ -24,5 +24,9 @@ int main()
 	printf("WD = %d\nRD = %d\n", WD, RD);
 	printf("%s\n", buf);
 
+	int on = 1;
+	int led_no = 7;
+	ioctl(fd, on, led_no);
+
 	return 0;
 }

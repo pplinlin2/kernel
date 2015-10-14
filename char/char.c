@@ -30,6 +30,14 @@ ssize_t testWrite(struct file *f, const char __user *u, size_t s, loff_t *l)
 	return 0;
 }
 
+long testIoctl(struct file *f, unsigned int cmd, unsigned long arg)
+{
+	printk("test ioctl\n");
+	printk("on/off: %d\n", cmd);
+	printk("led_num: %d\n", arg);
+	return 0;
+}
+
 int test_init(void)
 {
 	devNum = MKDEV(reg_major, reg_minor);
@@ -46,6 +54,7 @@ int test_init(void)
 	gFile->open = testOpen;
 	gFile->read = testRead;
 	gFile->write = testWrite;
+	gFile->unlocked_ioctl = testIoctl;
 	gFile->owner = THIS_MODULE;
 
 	cdev_init(gDev, gFile);
