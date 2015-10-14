@@ -1,4 +1,6 @@
 #include <linux/module.h>
+#include <linux/init.h>
+#include <linux/slab.h>
 
 char *dog_name[] = {"Lucky", "Max", "Rocky"};
 
@@ -8,7 +10,8 @@ struct dog{
 };
 struct list_head dog_list;
 
-int __init my_init()
+
+static int my_init(void)
 {
 	INIT_LIST_HEAD(&dog_list);
 
@@ -29,13 +32,15 @@ int __init my_init()
 	return 0;
 }
 
-void __exit my_exit()
+static void my_exit(void)
 {
+
 	struct dog *curr, *next;
 	list_for_each_entry_safe(curr, next, &dog_list, dog_entry){
 		list_del(&curr->dog_entry);
 		printk("delete %s\n", curr->name);
 	}
+
 }
 
 MODULE_LICENSE("GPL");
